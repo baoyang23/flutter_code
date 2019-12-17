@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:flutter/foundation.dart';
 
 // void main() => runApp(MyApp());
 
@@ -11,46 +9,197 @@ import 'package:flutter/foundation.dart';
   ));
 }*/
 
-// void main() => runApp(new YangListTwo());
-
 /*void main() {
-  runApp(new YangListThree(
-    items: new List<String>.generate(10000, (i) => "Item $i"),
+  runApp(new MaterialApp(
+    title: 'Gavin Title App',
+    home: new YangTutorialHome(),
+  ));
+}*/
+
+// void main() => runApp(new GavinApp());
+
+/*void main() => {
+  runApp(new YangGavinApp(items: new List<String>.generate(20, (i) => "Item ${i+1}"),
   ));
 }*/
 
 /*void main() {
-  runApp(new YangListFour(
-    items: new List<YangListItem>.generate(
-        100,
-        (i) => i % 6 == 0
-            ? new YangHandingItem("Heading $i")
-            : new YangMessageItem("Sender $i", "Message body $i")),
+  runApp(new YangGavinApp(
+    items: new List<String>.generate(20, (i) => "Item ${i + 1}"),
   ));
 }*/
 
+// void main() => runApp(new YangFirstScreen());
+
 /*void main() {
-  runApp(new YangListFive());
+  runApp(new MaterialApp(
+    title: 'Gavin Navigation Basics',
+    home: new YangFirstScreen(),
+  ));
 }*/
 
-void main() => runApp(new YangButtonPageApp());
+void main() {
+  runApp(new MaterialApp(
+    title: 'Passing Data',
+    home: new YangTodosScreen(
+      todes: new List.generate(
+          20,
+          (i) => new YangTodo(
+              'Todo $i', 'A description of what needs to be done for Todo $i')),
+    ),
+  ));
+}
 
-class YangButtonPageApp extends StatelessWidget {
+class YangTodosScreen extends StatelessWidget {
+  final List<YangTodo> todes;
+
+  YangTodosScreen({Key key, @required this.todes}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // return null;
-    final title = 'Gavin Button Demo';
-    return new MaterialApp(
-      title: title,
-      home: new YangHomePage(title:title),
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('YangTodos'),
+      ),
+      body: new ListView.builder(
+        itemCount: todes.length,
+        itemBuilder: (context, index) {
+          return new ListTile(
+            title: new Text(todes[index].title),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) =>
+                          new YangDetailScreen(yangTodo: todes[index])));
+            },
+          );
+        },
+      ),
     );
   }
 }
 
-class YangHomePage extends StatelessWidget {
+class YangDetailScreen extends StatelessWidget {
+  final YangTodo yangTodo;
+
+  YangDetailScreen({Key key, @required this.yangTodo}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('${yangTodo.title}'),
+      ),
+      body: new Padding(
+        padding: new EdgeInsets.all(16.0),
+        child: new Text('${yangTodo.description}'),
+      ),
+    );
+  }
+}
+
+class YangTodo {
+  final String title;
+  final String description;
+  YangTodo(this.title, this.description);
+}
+
+class YangFirstScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // return null;
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('First Screen'),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+            child: new Text('Launch new screen'),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new YangSecordScreen()));
+            }),
+      ),
+    );
+  }
+}
+
+class YangSecordScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // return null;
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Second Screen"),
+      ),
+      body: new Center(
+        child: new RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text('Go back!!!'),
+        ),
+      ),
+    );
+  }
+}
+
+class YangGavinApp extends StatelessWidget {
+  final List<String> items;
+
+  YangGavinApp({Key key, @required this.items}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final title = 'Gavin Dismissing Items';
+    return new MaterialApp(
+      title: title,
+      home: new Scaffold(
+          appBar: new AppBar(
+            title: new Text(title),
+          ),
+          body: new ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+
+              return new Dismissible(
+                key: new Key(item),
+                onDismissed: (direction) {
+                  items.removeAt(index);
+                  Scaffold.of(context).showSnackBar(
+                      new SnackBar(content: new Text('$item dismissed')));
+                },
+                background: new Container(color: Colors.red),
+                child: new ListTile(title: new Text('$item')),
+              );
+            },
+          )),
+    );
+    // return null;
+  }
+}
+
+class GavinApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final title = 'Gavin InkWell Demo';
+    return new MaterialApp(
+      title: title,
+      home: new GavinHomePage(title: title),
+    );
+    // return null;
+  }
+}
+
+class GavinHomePage extends StatelessWidget {
   final String title;
 
-  YangHomePage({Key key, this.title}) : super(key: key);
+  GavinHomePage({Key key, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,240 +208,82 @@ class YangHomePage extends StatelessWidget {
       appBar: new AppBar(
         title: new Text(title),
       ),
-      body: new Center(
-        child: new YangButtonOne(),
-      ),
+      body: new Center(child: new GavinButton()),
     );
   }
 }
 
-class YangButtonOne extends StatelessWidget {
+class GavinButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    // return null;
+    return new InkWell(
       onTap: () {
-        // 点击显示的内容 在底部
-        final snackBar = new SnackBar(content: new Text("点击Gavin小脸"));
-
-        Scaffold.of(context).showSnackBar(snackBar);
+        Scaffold.of(context)
+            .showSnackBar(new SnackBar(content: new Text('回显的提示内容')));
       },
       child: new Container(
         padding: new EdgeInsets.all(12.0),
+        child: new Text('Gavin点击按钮'),
+      ),
+    );
+  }
+}
+
+class YangCounter extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // return new State<StatefulWidget>;
+    return null;
+  }
+}
+
+class YangButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // return null;
+    return new GestureDetector(
+      onTap: () {
+        print("Gavin Button On Show!!!!");
+      },
+      child: new Container(
+        height: 36.0,
+        padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: new BoxDecoration(
-          color: Theme.of(context).buttonColor,
-          borderRadius: new BorderRadius.circular(8.0),
+          borderRadius: new BorderRadius.circular(5.0),
+          color: Colors.lightGreen[500],
         ),
-        // 按钮的名字
-        child: new Text('Gavin Buttion'),
-      ),
-    );
-    // return null;
-  }
-}
-
-class YangListFive extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final title = 'Gavin Yang Grid List';
-    return new MaterialApp(
-      title: title,
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text(title),
-        ),
-        body: new GridView.count(
-          crossAxisCount: 2,
-          children: new List.generate(15, (index) {
-            index = index + 1;
-            return new Center(
-              child: new Text(
-                'Item $index',
-                style: Theme.of(context).textTheme.headline,
-              ),
-            );
-          }),
+        child: new Center(
+          child: new Text('Gavin Gavin'),
         ),
       ),
     );
-    // return null;
   }
 }
 
-class YangListFour extends StatelessWidget {
-  final List<YangListItem> items;
-
-  YangListFour({Key key, @required this.items}) : super(key: key);
-
+class YangTutorialHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final title = 'Gavin Yang List';
-    return new MaterialApp(
-        home: new Scaffold(
+    // return null;
+    return new Scaffold(
       appBar: new AppBar(
-        title: new Text(title),
+        leading: new IconButton(
+            icon: new Icon(Icons.menu), tooltip: 'Gavin Menu', onPressed: null),
+        title: new Text('Gavin Title'),
+        actions: <Widget>[
+          new IconButton(
+              icon: new Icon(Icons.search),
+              tooltip: 'Search Gavin',
+              onPressed: null),
+        ],
       ),
-      body: new ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final it = items[index];
-          if (it is YangHandingItem) {
-            return new ListTile(
-              title: new Text(
-                it.heading,
-                style: Theme.of(context).textTheme.headline,
-              ),
-            );
-          } else if (it is YangMessageItem) {
-            return new ListTile(
-                title: new Text(it.sender), subtitle: new Text(it.body));
-          }
-        },
+      body: new Center(
+        child: new Text('Gavin Hello World.'),
       ),
-    ));
-    // return null;
-  }
-}
-
-abstract class YangListItem {}
-
-class YangHandingItem implements YangListItem {
-  final String heading;
-  YangHandingItem(this.heading);
-}
-
-class YangMessageItem implements YangListItem {
-  final String sender;
-  final String body;
-  YangMessageItem(this.sender, this.body);
-}
-
-class YangListThree extends StatelessWidget {
-  final List<String> items;
-
-  YangListThree({Key key, @required this.items}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final title = 'Gavin List';
-    return new MaterialApp(
-        title: title,
-        home: new Scaffold(
-          appBar: new AppBar(
-            title: new Text(title),
-          ),
-          body: new ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              return new ListTile(
-                title: new Text('${items[index]}'),
-              );
-            },
-          ),
-        ));
-    // return null;
-  }
-}
-
-class YangListTwo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final title = 'Gavin Horizontal List';
-    return new MaterialApp(
-      title: title,
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text(title),
-        ),
-        body: new Container(
-          margin: new EdgeInsets.symmetric(vertical: 20.0),
-          height: 200.0,
-          child: new ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              new Container(
-                width: 160.0,
-                color: Colors.red,
-              ),
-              new Container(
-                width: 160.0,
-                color: Colors.blue,
-              ),
-              new Container(
-                width: 160.0,
-                color: Colors.green,
-              ),
-              new Container(
-                width: 160.0,
-                color: Colors.yellow,
-              ),
-              new Container(
-                width: 160.0,
-                color: Colors.orange,
-              )
-            ],
-          ),
-        ),
-      ),
+      floatingActionButton: new FloatingActionButton(
+          tooltip: 'Gavin Add', child: new Icon(Icons.add), onPressed: null),
     );
-    // return null;
-  }
-}
-
-class YangListOne extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final title = 'Gavin One List';
-    return new MaterialApp(
-        title: title,
-        home: new Scaffold(
-          appBar: new AppBar(
-            title: new Text(title),
-          ),
-          body: new ListView(
-            children: <Widget>[
-              new ListTile(
-                leading: new Icon(Icons.map),
-                title: new Text('Map'),
-              ),
-              new ListTile(
-                leading: new Icon(Icons.photo),
-                title: new Text('Album'),
-              ),
-              new ListTile(
-                leading: new Icon(Icons.phone),
-                title: new Text('phone'),
-              )
-            ],
-          ),
-        ));
-    //return null;
-  }
-}
-
-class YangImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final title = 'Web Images';
-    return new MaterialApp(
-      title: title,
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text(title),
-        ),
-        // body: new Image.network('https://avatar.csdnimg.cn/F/6/C/3_ainuser.jpg'),
-        body: new Stack(
-          children: <Widget>[
-            new Center(child: new CircularProgressIndicator()),
-            new Center(
-              child: new FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: 'https://avatar.csdnimg.cn/F/6/C/3_ainuser.jpg'),
-            )
-          ],
-        ),
-      ),
-    );
-    // return null;
   }
 }
 
@@ -310,16 +301,19 @@ class YangAppBar extends StatelessWidget {
       child: new Row(
         children: <Widget>[
           new IconButton(
-              icon: new Icon(Icons.menu),
-              tooltip: 'Gavin Menu',
-              onPressed: null),
+            icon: new Icon(Icons.menu),
+            tooltip: 'Gavin Menu',
+            onPressed: null,
+          ),
           new Expanded(child: title),
           new IconButton(
-              icon: new Icon(Icons.search), tooltip: 'Search', onPressed: null)
+              icon: new Icon(Icons.search),
+              tooltip: 'Search Gavin',
+              onPressed: null)
         ],
       ),
     );
-    // return null;
+    //return null;
   }
 }
 
@@ -331,18 +325,17 @@ class YangScaffold extends StatelessWidget {
         children: <Widget>[
           new YangAppBar(
             title: new Text(
-              'GavinYang Title',
+              'Gavin Title',
               style: Theme.of(context).primaryTextTheme.title,
             ),
           ),
           new Expanded(
               child: new Center(
-            child: new Text('Hello GavinYang,World.'),
+            child: new Text("I'm Gavin."),
           ))
         ],
       ),
     );
-    // return null;
   }
 }
 
