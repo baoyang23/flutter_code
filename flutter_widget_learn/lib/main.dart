@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
@@ -39,8 +41,296 @@ import 'package:flutter/foundation.dart';
   ));
 }*/
 
-void main(){
+/*void main(){
   runApp(new GavinAnimatedListSample());
+}*/
+
+void main(){
+  runApp(new GavinTabbedAppBarSample());
+}
+
+class GavinTabbedAppBarSample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // return null;
+    return new MaterialApp(
+      home: new DefaultTabController(
+        length: choices.length,
+        child: new Scaffold(
+          appBar: new AppBar(
+            title: const Text('Gavin AppBar'),
+            bottom: new TabBar(
+              isScrollable: true,
+              tabs: choices.map((GavinChoice choice){
+                return new Tab(
+                  text: choice.title,
+                  icon: new Icon(choice.icon),
+                );
+              }).toList(),
+            ),
+          ),
+          body: new TabBarView(
+            children: choices.map((GavinChoice choice){
+              return new Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: new GavinChoiceCard(choice: choice ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GavinExpansionTileSample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      home: new Scaffold(
+        appBar: new AppBar(
+          title: const Text('Gavin Example'),
+        ),
+        body: new ListView.builder(
+          itemBuilder: (BuildContext context, int index) => new EntryItem(data[index]),
+          itemCount: data.length,
+        ),
+      ),
+    );
+  }
+}
+
+class Entry {
+
+  Entry(this.title,[this.children = const <Entry>[]]);
+
+  final String title;
+  final List<Entry> children;
+
+}
+
+final List<Entry> data = <Entry> [
+  new Entry('Chapter A',
+    <Entry>[
+      new Entry('Section A0',
+        <Entry>[
+          new Entry('Item A0.1'),
+          new Entry('Item A0.2'),
+          new Entry('Item A0.3'),
+        ],
+      ),
+      new Entry('Section A1'),
+      new Entry('Section A2'),
+    ],
+  ),
+  new Entry('Chapter B',
+    <Entry>[
+      new Entry('Section B0'),
+      new Entry('Section B1'),
+    ],
+  ),
+  new Entry('Chapter C',
+    <Entry>[
+      new Entry('Section C0'),
+      new Entry('Section C1'),
+      new Entry('Section C2',
+        <Entry>[
+          new Entry('Item C2.0'),
+          new Entry('Item C2.1'),
+          new Entry('Item C2.2'),
+          new Entry('Item C2.3'),
+        ],
+      ),
+    ],
+  ),
+];
+
+class EntryItem extends StatelessWidget {
+
+  final Entry entry;
+
+  const EntryItem(this.entry);
+
+  Widget _buildTitles(Entry root){
+    if(root.children.isEmpty){
+      return new ListTile(title: new Text(root.title));
+    }
+    return new ExpansionTile(
+      key: new PageStorageKey<Entry>(root),
+      title: new Text(root.title),
+      children: root.children.map(_buildTitles).toList(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // return null;
+    return _buildTitles(entry);
+  }
+}
+
+class GavinBasicAppBarSample extends StatefulWidget {
+  _GavinBasicAppBarSampleState createState() => new _GavinBasicAppBarSampleState();
+}
+
+class _GavinBasicAppBarSampleState extends State<GavinBasicAppBarSample> {
+
+  GavinChoice _selectChoice = choices[0];
+
+  void _select(GavinChoice choice){
+    setState(() {
+      _selectChoice = choice;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return new MaterialApp(
+      home: new Scaffold(
+        appBar: new AppBar(
+          title: const Text('LWF'),
+          actions: <Widget>[
+            new IconButton(icon: new Icon(choices[0].icon), onPressed: (){ _select(choices[0]); }),
+            new IconButton(icon: new Icon(choices[1].icon), onPressed: (){ _select(choices[1]); }),
+            new IconButton(icon: new Icon(choices[2].icon), onPressed: (){ _select(choices[2]); }),
+            new IconButton(icon: new Icon(choices[3].icon), onPressed: (){ _select(choices[3]); }),
+            new IconButton(icon: new Icon(choices[4].icon), onPressed: (){ _select(choices[4]); }),
+            new PopupMenuButton<GavinChoice>(
+              onSelected: _select,
+              itemBuilder: (BuildContext context) {
+                return choices.skip(2).map((GavinChoice choic){
+                  return new PopupMenuItem<GavinChoice>(
+                    value: choic,
+                    child: new Text(choic.title),
+                  );
+                }).toList();
+              }
+            )
+          ],
+        ),
+        body: new Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: new GavinChoiceCard(choice: _selectChoice),
+        ),
+      ),
+    );
+  }
+}
+
+class YangAppBarBottomSample extends StatefulWidget {
+  @override
+  _GavinAppBarBottomSampleState createState() => new _GavinAppBarBottomSampleState();
+}
+
+class _GavinAppBarBottomSampleState extends State<YangAppBarBottomSample> with SingleTickerProviderStateMixin{
+
+  TabController _tabController;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(vsync: this,length: choices.length);
+  }
+
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _nextPage (int delta){
+    final int newIndex = _tabController.index + delta;
+    if(newIndex < 0 || newIndex >= _tabController.length){
+      return;
+    }
+    _tabController.animateTo(newIndex);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return new MaterialApp(
+      home: new Scaffold(
+        appBar: new AppBar(
+          title: const Text('Gavin Button Widget'),
+          leading: new IconButton(
+            tooltip: '上一个',
+            icon: const Icon(Icons.arrow_back),
+            onPressed: (){ _nextPage(-1); },
+          ),
+          actions: <Widget>[
+            new IconButton(
+              icon: const Icon(Icons.arrow_forward),
+              tooltip: '下一个',
+              onPressed: (){ _nextPage(1); },
+            )
+          ],
+          bottom: new PreferredSize(
+            preferredSize: const Size.fromHeight(48.0),
+            child: new Theme(
+              data: Theme.of(context).copyWith(accentColor: Colors.white),
+              child: new Container(
+                height: 48.0,
+                alignment: Alignment.center,
+                child: new TabPageSelector(controller: _tabController),
+              ),
+            ),
+          ),
+        ),
+        body: new TabBarView(
+          controller: _tabController,
+          children: choices.map((GavinChoice choice){
+            return new Padding(padding: const EdgeInsets.all(16.0),child: new GavinChoiceCard(choice: choice),);
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class GavinChoiceCard extends StatelessWidget {
+
+  final GavinChoice choice;
+
+  const GavinChoiceCard({Key key,this.choice}) : super(key : key);
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle textStyle  = Theme.of(context).textTheme.display1;
+    return new Card(
+      color: Colors.white,
+      child: new Center(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Icon(choice.icon,size: 128.0,color: textStyle.color),
+            new Text(choice.title,style: textStyle),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+const List<GavinChoice> choices = const <GavinChoice> [
+  const GavinChoice(title: 'CAR',icon: Icons.directions_car),
+  const GavinChoice(title: 'BICYCLE', icon: Icons.directions_bike),
+  const GavinChoice(title: 'BOAT', icon: Icons.directions_boat),
+  const GavinChoice(title: 'BUS', icon: Icons.directions_bus),
+  const GavinChoice(title: 'TRAIN',icon: Icons.directions_railway),
+  const GavinChoice(title: 'WALK', icon: Icons.directions_walk),
+];
+
+class GavinChoice {
+  final String title;
+  final IconData icon;
+  const GavinChoice({this.title,this.icon});
 }
 
 class GavinAnimatedListSample extends StatefulWidget {
