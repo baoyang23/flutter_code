@@ -1,8 +1,353 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
 
 // void main() => runApp(MyApp());
 
-void main() => runApp(new MyCounterApp());
+void main() => runApp(new GavinSwitchAndCheckBoxTestRouteApp());
+
+class GavinSwitchAndCheckBoxTestRouteApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return MaterialApp(
+      title: 'Flutter Counter Demo',
+      home: new GavinSwitchAndCheckBoxTestRoute(),
+    );
+  }
+}
+
+class GavinSwitchAndCheckBoxTestRoute extends StatefulWidget {
+
+  _GavinSwitchAndCheckBoxTestRouteState createState() => new _GavinSwitchAndCheckBoxTestRouteState();
+}
+
+class _GavinSwitchAndCheckBoxTestRouteState extends State<GavinSwitchAndCheckBoxTestRoute> {
+
+  bool _switchSelected = true;
+  bool _checkboxSelected = true;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return Column(
+      children: <Widget>[
+        Switch(
+          value: _switchSelected,
+          onChanged: (value){
+            setState(() {
+              _switchSelected = value;
+            });
+          },
+        ),
+        Checkbox(
+          value: _checkboxSelected,
+          activeColor: Colors.red,
+          onChanged: (value){
+            setState(() {
+              _checkboxSelected = value;
+            });
+          },
+        )
+      ],
+    );
+  }
+}
+
+class GavinImageAndIconRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    var img = AssetImage("images/avatar.png");
+    return SingleChildScrollView(
+      child: Column(
+        children: <Image>[
+          Image(
+            image: img,
+            height: 50.0,
+            width: 100.0,
+            fit: BoxFit.fill,
+          ),
+          Image(
+            image: img,
+            height: 50.0,
+            width: 100.0,
+            fit: BoxFit.contain,
+          ),
+          Image(
+            image: img,
+            height: 50.0,
+            width: 100.0,
+            fit: BoxFit.cover,
+          )
+        ].map((e){
+          return Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: 100,
+                  child: e,
+                ),
+              ),
+              Text(e.fit.toString())
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class GavinParentWidget extends StatefulWidget {
+
+  @override
+  _GavinParentWidgetState createState() => new _GavinParentWidgetState();
+}
+
+class _GavinParentWidgetState extends State<GavinParentWidget> {
+
+  bool _isactive = false;
+
+  void _handleTapboxChanged(bool newValue){
+    setState(() {
+      this._isactive = newValue;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return new Container(
+      child: new TapboxTwo(
+        active: _isactive,
+        onChanged: _handleTapboxChanged,
+      ),
+    );
+  }
+}
+
+class TapboxTwo extends StatelessWidget {
+
+  final bool active;
+  final ValueChanged<bool> onChanged;
+
+  TapboxTwo({Key key,this.active:false,@required this.onChanged}):super(key:key);
+
+  void _handleTap(){
+    onChanged(!active);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return new GestureDetector(
+      onTap: _handleTap,
+      child: new Container(
+        child: new Center(
+          child: new Text(
+            active ? 'Active' : 'Inactive',
+            style: new TextStyle(fontSize: 32.0,color: Colors.white),
+          ),
+        ),
+        width: 200.0,
+        height: 200.0,
+        decoration: new BoxDecoration(
+            color: active ? Colors.lightGreen[700]:Colors.grey[600],
+        ),
+      ),
+    );
+  }
+}
+
+
+class MyGavinTopBoxOne extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return MaterialApp(
+      title: 'Flutter Counter Demo',
+      home: new GavinParentWidget(),
+    );
+  }
+}
+
+
+class GavinTopBoxOne extends StatefulWidget {
+
+  GavinTopBoxOne({Key key}) : super(key:key);
+
+  @override
+  _GavinTopBoxOneState createState() => new _GavinTopBoxOneState();
+}
+
+/**
+ * 自己管理自己的状态
+ */
+class _GavinTopBoxOneState extends State<GavinTopBoxOne> {
+
+  bool _active = false;
+
+  void _handleTap(){
+    setState(() {
+      _active = !_active;
+    });
+  }
+
+  void _doit(){
+    setState(() {
+
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return GestureDetector(
+      onTap: _handleTap,
+      child: new Container(
+        child: new Center(
+          child: new Text(
+            _active ? 'Avtive' : 'Inactive',
+            style: new TextStyle(fontSize: 32.0,color: Colors.white),
+          ),
+        ),
+        width: 200.0,
+        height: 200.0,
+        decoration: new BoxDecoration(
+          color: _active ? Colors.lightGreen[700] : Colors.grey[600],
+        ),
+      ),
+    );
+  }
+}
+
+class GavinEchoHome extends StatefulWidget {
+  _GavinEchoPageHome createState() => new _GavinEchoPageHome();
+}
+
+class _GavinEchoPageHome extends State<GavinEchoHome> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        title: Text('Gavin Test Echo'),
+      ),
+      body: Container(
+        child: Builder(builder: (context){
+          return GavinEcho(text: 'Echo Hello World.');
+        }),
+      ),
+    );
+  }
+}
+
+class GavinEcho extends StatelessWidget {
+
+  final String text;
+  final Color backgroundColor;
+
+  const GavinEcho({
+    Key key,@required this.text,this.backgroundColor:Colors.grey,
+  }) : super(key:key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return Center(
+      child: Container(
+        color: backgroundColor,
+        child: Text(text),
+      ),
+    );
+  }
+}
+
+class GavinRandomWordsWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    final wordPair = new WordPair.random();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Text(wordPair.toString()),
+    );
+  }
+}
+
+class GavinTestRouter extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return Center(
+      child: RaisedButton(
+        onPressed: () async {
+          var result =   await Navigator.push(context, MaterialPageRoute(builder: (context){
+            return GavinTipRoute(text: '我是来自Gavin的提示信息');
+          }));
+          print('　路由返回的信息 $result');
+        },
+        child: Text('网络遇见问题,无法打开.'),
+      ),
+    );
+  }
+}
+
+class GavinTipRoute extends StatelessWidget {
+
+  final String text;
+
+  GavinTipRoute({Key key,@required this.text}) : super(key:key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        title: Text('来自Gavin的提示信息'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(18),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text(text),RaisedButton(
+                onPressed: () => Navigator.pop(context,'来自Gavin的返回值'),
+                child: Text('返回'),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GavinNewRouter extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    // return null;
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text('New Router'),
+      ),
+      body: Center(
+        child: Text('This is new Gavin Router.'),
+      ),
+    );
+  }
+}
 
 class MyCounterApp extends StatelessWidget {
   @override
@@ -40,6 +385,13 @@ class _GavinHomePageState extends State<GavinHomePage> {
     });
   }
 
+
+  void _reduceCounter(){
+    setState(() {
+      _counter --;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // return null;
@@ -52,14 +404,24 @@ class _GavinHomePageState extends State<GavinHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text('You have pushed the button this many times ',),
-            new Text('$_counter',style: Theme.of(context).textTheme.display1,)
+            new Text('$_counter',style: Theme.of(context).textTheme.display1,),
+            FlatButton(
+              child: Text('New Open router'),
+              textColor: Colors.blue,
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return GavinNewRouter();
+                }));
+              },
+            ),
+            GavinRandomWordsWidget(),
           ],
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: '增加',
-        child: new Icon(Icons.add),
+        onPressed: _reduceCounter,
+        tooltip: '增加/减少',
+        child: new Icon(Icons.arrow_back),
       ),
     );
   }
@@ -71,7 +433,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
+      theme: new ThemeData(
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -83,7 +445,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

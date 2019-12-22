@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/flutter_action_case_one/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_action_case_one/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_action_layout_case/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_action_layout_case/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_helloworld/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_helloworld/build" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_widget_learn/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/flutter_widget_learn/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
