@@ -4,7 +4,155 @@ import 'package:flutter/material.dart';
 
 //void main() => runApp(YangListParam(items: new List<String>.generate(1000, (i) => 'Item $i')));
 
-void main() => runApp(YangGridImages());
+void main() => runApp(YangCardListBasicOne());
+
+class YangCardListBasicOne extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var card = new Card(
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            title: new Text('Yang One'),
+            subtitle: new Text('Yang One Subtitle'),
+            leading: new Icon(Icons.account_box,color:Colors.lightBlue,),
+          ),
+          new Divider(),
+          ListTile(
+            title: new Text('Yang Two'),
+            subtitle: new Text('Yang Two Subtitle'),
+            leading: new Icon(Icons.account_box,color:Colors.lightBlue,),
+          ),
+          new Divider(),
+          ListTile(
+            title: new Text('Yang Three'),
+            subtitle: new Text('Yang Three Subtitle'),
+            leading: new Icon(Icons.account_box,color:Colors.lightBlue,),
+          ),
+          new Divider(),
+        ],
+      ),
+    );
+
+    return MaterialApp(
+      title: 'Yang Card List View',
+      home: Scaffold(
+        appBar: new AppBar(
+          title: new Text('卡片布局操作'),
+        ),
+        body: Center(child: card,),
+      ),
+    );
+  }
+}
+
+class YangStackImageBasicOne extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    var stack = new Stack(
+      alignment: const FractionalOffset(0.5, 0.8),
+      children: <Widget>[
+        new CircleAvatar(
+          backgroundImage: new NetworkImage('https://img14.360buyimg.com/pop/s1180x940_jfs/t1/97733/27/10037/93770/5e159e3eEdc7a4241/7e038b38040faa38.jpg.webp'),
+          radius: 100.0,
+        ),
+       new Positioned(
+         top: 10.0,
+         left: 10.0,
+         child: new Text('Yang.com'),
+       ),
+       new Positioned(
+         bottom: 10.0,
+         right: 10.0,
+         child: new Text('Yangge Blog'),
+       )
+       /* new Container(
+          decoration: new BoxDecoration(
+            color: Colors.lightBlue,
+          ),
+          padding: EdgeInsets.all(5.0),
+          child: new Text('Yang Blog Content'),
+        )*/
+      ],
+    );
+    return MaterialApp(
+      title: 'List View Stack Case',
+      home: Scaffold(
+        appBar: new AppBar(
+          title: new Text('垂直方向操作'),
+        ),
+        body: Center(child: stack),
+      ),
+    );
+  }
+}
+
+class YangExpandedBasicOne extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Yang Expanded List Param',
+      home: Scaffold(
+        appBar: new AppBar(
+          title: new Text('水平方向布局'),
+        ),
+        body: new Row(
+          children: <Widget>[
+            Expanded(child: new RaisedButton(
+              onPressed: (){},
+              color: Colors.redAccent,
+              child: new Text('红色的按钮'),
+            )),
+            Expanded(child: new RaisedButton(
+              onPressed: (){},
+              color: Colors.yellowAccent,
+              child: new Text('黄色的按钮'),
+            )),
+            Expanded(child: new RaisedButton(
+              onPressed: (){},
+              color: Colors.pinkAccent,
+              child: new Text('粉色的按钮'),
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class YangRowOneBasic extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Yang Row Code Learn',
+      home: Scaffold(
+        appBar: new AppBar(
+          title: new Text('水平方向的布局'),
+        ),
+        body: new Row(
+          children: <Widget>[
+            new RaisedButton(
+              onPressed: (){},
+              color: Colors.redAccent,
+              child: new Text('红色的按钮'),
+            ),
+            new RaisedButton(
+              onPressed: (){},
+              color: Colors.orangeAccent,
+              child: Text('橙色的按钮'),
+            ),
+            new RaisedButton(
+              onPressed: (){},
+              color: Colors.pinkAccent,
+              child: Text('粉色的按钮'),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class YangGridImages extends StatelessWidget {
   @override
